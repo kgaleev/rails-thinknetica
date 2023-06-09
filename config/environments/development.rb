@@ -73,4 +73,7 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # Uncomment to remove the display of request timing (server restart is required)
+  # config.middleware.delete(Rack::MiniProfiler)
 end
