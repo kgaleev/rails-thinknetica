@@ -1,34 +1,22 @@
 # README
 
+Technology Stack:
 * Ruby 3.2.2
-
 * Rails 6.1.7.3
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
 
 
 Entities in the project:
-
-* Admin
-
-* User
-
+* Admin 
+* User 
 * Test
- 
 * Question
-
 * Answer
-
 * Result
+
+
+Possible Actions:
+* Admin AND User have Authorization
+* Admin can create and manage tests: add questions and answers
+* User can take tests
+* Admin AND User can view results
+* User can publish results in social networks

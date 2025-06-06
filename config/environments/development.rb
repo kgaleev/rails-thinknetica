@@ -75,5 +75,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # Uncomment to remove the display of request timing (server restart is required)
-  # config.middleware.delete(Rack::MiniProfiler)
+   config.middleware.delete(Rack::MiniProfiler)
 end
