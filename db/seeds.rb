@@ -6,35 +6,30 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
- Answer.delete_all
- Question.delete_all
- Test.delete_all
- Category.delete_all
- User.delete_all
+Answer.delete_all
+Question.delete_all
+Test.delete_all
+Category.delete_all
+User.delete_all
 
- ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories'")
- ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users'")
- ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='tests'")
- ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='questions'")
- ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='answers'")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories'")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users'")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='tests'")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='questions'")
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='answers'")
 
-  Category.create!([{title: "Math"}, {title: "History"}, {title: "Geography"}])
+categories = Category.create!([{ title: "Math" }, {title: "History"}, {title: "Geography"}])
 
-  User.create!([{name: "Admin"}, {name: "User1"}, {name: "User2"}])
+authors = User.create!([{ name: "Admin" }, { name: "User1" }, { name: "User2" }])
 
-categories = Category.all
-authors = User.all
-
-  10.times do |i|
-    Test.create!(
-      title: "Test #{i + 1}",
-      level: rand(1..3),
-      category_id: categories.sample.id,
-      author_id: authors.sample.id
-   )
-  end
-
-tests = Test.all
+tests = 10.times.map do |i|
+  Test.create!(
+    title: "Test #{i + 1}",
+    level: rand(1..3),
+    category_id: categories.sample.id,
+    author_id: authors.sample.id
+  )
+end
 
 question_templates = [
   "What is the capital of France?",
@@ -48,16 +43,14 @@ question_templates = [
   "What is the speed of light?"
 ]
 
-  tests.each do |test|
-    question_templates.sample(3).each do |question_body|
-      Question.create!(
-        body: question_body,
-        test_id: test.id
-      )
-    end
+questions = tests.flat_map do |test|
+  question_templates.sample(3).map do |question_body|
+    Question.create!(
+      body: question_body,
+      test_id: test.id
+    )
   end
-
-questions = Question.all
+end
 
 correct_answers = {
   "What is the capital of France?" => "Paris",
@@ -83,21 +76,20 @@ incorrect_answers = {
   "What is the speed of light?" => ["300,000,000 meters per second", "293,791,488 meters per second", "219,790,456 meters per second"]
 }
 
-  questions.each do |question|
-    body = question.body
+answers = questions.each do |question|
+  body = question.body
 
+  Answer.create!(
+    body: correct_answers[body],
+    correct: true,
+    question_id: question.id
+  )
+
+  incorrect_answers[body].each do |incorrect|
     Answer.create!(
-      body: correct_answers[body],
-      correct: true,
+      body: incorrect,
+      correct: false,
       question_id: question.id
     )
-
-    incorrect_answers[body].each do |incorrect|
-      Answer.create!(
-        body: incorrect,
-        correct: false,
-        question_id: question.id
-      )
-    end
-
   end
+end
