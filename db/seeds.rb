@@ -9,7 +9,6 @@
 Result.delete_all
 Answer.delete_all
 Question.delete_all
-TestsUser.delete_all
 Test.delete_all
 Category.delete_all
 User.delete_all
@@ -17,7 +16,6 @@ User.delete_all
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='categories'")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='users'")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='tests'")
-ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='tests_users'")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='questions'")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='answers'")
 ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='results'")
@@ -35,13 +33,7 @@ tests = 10.times.map do |i|
   )
 end
 
-allowed_users = User.where.not(name: 'Admin')
-
-allowed_users.each do |user|
-  tests.each do |test|
-    user.tests << test
-  end
-end
+#allowed_users = User.where.not(name: 'Admin')
 
 # constant array needs a mutable copy to work with .shift
 question_templates = [
