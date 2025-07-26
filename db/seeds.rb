@@ -33,7 +33,7 @@ tests = 10.times.map do |i|
   )
 end
 
-#allowed_users = User.where.not(name: 'Admin')
+# allowed_users = User.where.not(name: 'Admin')
 
 # constant array needs a mutable copy to work with .shift
 question_templates = [
